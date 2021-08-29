@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*
 class UsersRobbysController(private var userRobbysService: UserRobbysService) {
     private val logger: org.slf4j.Logger = LoggerFactory.getLogger(this::class.java)
 
-    @GetMapping()
-    private fun getUserRobbys(): String{
-        logger.info("Iniciei meu endpoint!")
-        return "Vamos que vamos"
-
+    @GetMapping(value = ["/{name}"])
+    private fun getUserRobbysByName(@Validated @PathVariable name: String): ResponseEntity<UserRobbyDTO>{
+        logger.info("Iniciei meu endpoint! Nome a ser buscado: $name")
+        val userHobby = userRobbysService.getUserHobby(name)
+       return ResponseEntity.ok().body(UserRobbyDTO(idUser = userHobby.idUser, nameUser = userHobby.nameUser, hobbies = userHobby.hobbies))
     }
 
     @PostMapping
